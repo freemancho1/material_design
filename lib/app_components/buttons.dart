@@ -62,11 +62,16 @@ class ColorSelectButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final useMaterial3 = Theme.of(context).useMaterial3;
+    final isBright = Theme.of(context).brightness == Brightness.light;
     return PopupMenuButton(
       /// 팝업 전체의 아이콘(색상은 현재 테마의 onSurfaceVariant 이용)
       icon: Icon(
         Icons.palette_outlined,
-        color: Theme.of(context).colorScheme.onSurfaceVariant,
+        // color: Colors.white,
+        color: !useMaterial3 && isBright
+          ? Colors.white
+          : Theme.of(context).colorScheme.onSurfaceVariant,
       ),
       tooltip: '테마 색상을 선택하세요.',
       /// shape에 올 수 있는 유형
