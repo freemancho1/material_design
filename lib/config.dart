@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class SysCfg {
   /// 작은, 중간, 큰 화면의 폭 임계값
-  static const double narrowScreenWidth = 450;  /// narrow: 450~1000
-  static const double mediumScreenWidth = 1000; /// medium: 1000~1500
-  static const double largeScreenWidth = 1500;  /// large: 1500~
+  static const double narrowScreenWidth = 450;  /// narrow: 450~800
+  static const double mediumScreenWidth = 800;  /// medium: 800~1200
+  static const double largeScreenWidth = 1200;  /// large: 1200~
 
-  /// Todo: 전환길이? 용도 확인
+  /// Duration(millisecond: 이 값 * 2함)
   static const double transitionLength = 500;
 }
 

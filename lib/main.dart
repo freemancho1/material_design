@@ -35,7 +35,6 @@ class _MaterialDesignAppState extends State<MaterialDesignApp> {
   /// 아래 3개의 함수는 위 3개의 값(useMaterial3, themeMode, colorSelected)을
   /// 자식 위젯들에서 변경할 수 있도록 하기 위해 만든 함수로 AppBar 등에서 사용
   void handleBrightnessToggle() {
-    debugPrint('useLightMode: $useLightMode');
     setState(() => themeMode = useLightMode ? ThemeMode.dark : ThemeMode.light);
   }
 
@@ -49,18 +48,21 @@ class _MaterialDesignAppState extends State<MaterialDesignApp> {
 
   @override
   Widget build(BuildContext context) {
-    final baseThemeData = ThemeData(
-      /// 컬러테마 색상 설정
-      colorSchemeSeed: colorSelected.color,   /// State에서 변경값 모니터링
-      useMaterial3: useMaterial3,             /// State에서 변경값 모니터링
-    );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Material Design',
       themeMode: themeMode,                   /// State에서 변경값 모니터링
       /// themeMode에 따라 theme와 dartTheme를 선택해 사용
-      theme: baseThemeData.copyWith(brightness: Brightness.light),
-      darkTheme: baseThemeData.copyWith(brightness: Brightness.dark),
+      theme: ThemeData(
+        colorSchemeSeed: colorSelected.color, /// State에서 변경값 모니터링
+        useMaterial3: useMaterial3,           /// State에서 변경값 모니터링
+        brightness: Brightness.light,
+      ),
+      darkTheme: ThemeData(
+        colorSchemeSeed: colorSelected.color,
+        useMaterial3: useMaterial3,
+        brightness: Brightness.dark,
+      ),
       home: Home(
         useLightMode: useLightMode,
         useMaterial3: useMaterial3,

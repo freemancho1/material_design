@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design/app_components/buttons.dart';
 import 'package:material_design/app_components/navigation_transition.dart';
 import 'package:material_design/config.dart';
+import 'package:material_design/screens/components/constants.dart';
 
 class Home extends StatefulWidget {
   final bool useLightMode;
@@ -72,6 +73,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     final double screenWidth = MediaQuery.of(context).size.width;
     final AnimationStatus status = controller.status;
 
+    /// 화면의 크기에 따라 중간화면크기 이상이면 좌측 매뉴를 펼치는 애니메이션을 하고,
+    /// 중간크기 이하이면 닫히는 애니메이션을 함
     if (screenWidth > SysCfg.mediumScreenWidth) {
       if (screenWidth > SysCfg.largeScreenWidth) {
         showMediumSizeLayout = false;
@@ -93,9 +96,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       }
     }
 
+    /// 최초에 한번만 수행하며, 컨트롤러가 초기화가 안된 상태로 화면이 켜졌을 때,
+    /// 화면이 중간크기 이상이면 controller값을 1로해서 자동으로 왼쪽 창이 열려져 있도록
+    /// 하는 역할을 수행함.
     if (!controllerInitialized) {
       controllerInitialized = true;
-      /// Todo: 이유는?
       controller.value = screenWidth > SysCfg.mediumScreenWidth ? 1 : 0;
     }
   }
@@ -145,6 +150,25 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           railAnimation: railAnimation,
           appBar: createAppBar(),
           body: createScreenFor(),
+          /// 큰 화면에서 표시되는 죄측 메뉴바
+          /// 작은 화면에서는 하단 바로 구현되어야 함(하단 바는 별도 구현)
+          /// 화면이 중간크기보다 작어지면 닫히는 애니메이션은
+          /// 위 didChangeDependencies()함수에 구현되어 있음.
+          navigationRail: NavigationRail(
+            /// NavigationRail을 확장하는 조건
+            // extended: showMediumSizeLayout || showLargeSizeLayout,
+            extended: showLargeSizeLayout,
+            destinations: navRailDestinations,  /// 메뉴 구성
+            selectedIndex: screenIndex,
+            onDestinationSelected: (index) {    /// 메뉴를 선택한 경우
+              setState(() {
+                /// Todo: 이 두개가 똑같은 역할을 하는거 같은데 확인.
+                screenIndex = index;
+                handleScreenChange(screenIndex);
+              });
+            },
+            /// Todo: Continue....
+          ),
         );
       }
     );
