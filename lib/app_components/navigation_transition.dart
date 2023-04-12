@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:material_design/app_components/transitions.dart';
 
 class NavigationTransition extends StatefulWidget {
-  /// Todo: Continue....2 => navigationBar
   final GlobalKey<ScaffoldState> scaffoldKey;
   final AnimationController animationController;
   final CurvedAnimation railAnimation;
   final Widget navigationRail;
+  final Widget navigationBar;
   final PreferredSizeWidget appBar;
   final Widget body;
   const NavigationTransition({
@@ -15,6 +15,7 @@ class NavigationTransition extends StatefulWidget {
     required this.animationController,
     required this.railAnimation,
     required this.navigationRail,
+    required this.navigationBar,
     required this.appBar,
     required this.body,
   });
@@ -56,7 +57,7 @@ class _NavigationTransitionState extends State<NavigationTransition> {
       appBar: widget.appBar,
       body: Row(
         children: [
-          /// 왼쪽에 메뉴바를 배치(큰 화면이 아니면 표현되지 않음)
+          /// 왼쪽에 메뉴바를 배치(작은 화면에서는 숨김처리)
           RailTransition(
             animation: railAnimation,
             backgroundColor: colorScheme.surface,
@@ -65,6 +66,11 @@ class _NavigationTransitionState extends State<NavigationTransition> {
           /// 본문 표현
           widget.body,
         ],
+      ),
+      bottomNavigationBar: BarTransition(
+        animation: barAnimation,
+        backgroundColor: colorScheme.surface,
+        child: widget.navigationBar,
       ),
     );
   }

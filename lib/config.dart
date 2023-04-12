@@ -8,6 +8,18 @@ class SysCfg {
 
   /// Duration(millisecond: 이 값 * 2함)
   static const double transitionLength = 500;
+
+  /// 분리자
+  static const SizedBox rowDivider = SizedBox(width: 20,);
+  static const SizedBox colDivider = SizedBox(height: 10,);
+
+  /// Spacing
+  static const double tinySpacing = 3.0;
+  static const double smallSpacing = 10.0;
+
+  /// 기타
+  static const double cardWidth = 115;
+  static const double widthConstraint = 450;
 }
 
 enum ColorSeed {

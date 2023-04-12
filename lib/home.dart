@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_design/app_components/buttons.dart';
+import 'package:material_design/app_components/navigation_bars.dart';
 import 'package:material_design/app_components/navigation_transition.dart';
 import 'package:material_design/config.dart';
 import 'package:material_design/screens/components/constants.dart';
@@ -140,7 +141,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    /// Todo: Continue.....1
     return AnimatedBuilder(
       animation: controller,
       builder: (context, child) {
@@ -167,10 +167,104 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 handleScreenChange(screenIndex);
               });
             },
-            /// Todo: Continue....
+            /// 왼쪽 메뉴중 하단 메뉴, 적은화면에서는 앱바에 표시되는 부분임
+            /// 큰 화면에서 자동으로 생성되는게 아닌, 각각 구현해야함
+            trailing: Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: showLargeSizeLayout
+                  ? _expandedTrailingAction()
+                  : _trailingActions(),
+              ),
+            ),
+          ),
+          navigationBar: NavigationBars(
+            onSelectItem: (index) {
+              setState(() {
+                screenIndex = index;
+                handleScreenChange(screenIndex);
+              });
+            },
+            selectedIndex: screenIndex,
+            isExampleBar: false,
           ),
         );
+        /// Todo: Continue......
       }
     );
   }
+
+  /// 큰 화면의 왼쪽 하단 구현(중간화면은 별도로 구현)
+  Widget _expandedTrailingAction() => Container(
+    /// Container 제약조건 지정
+    /// .tightFor(딱 그 크기), .tight(최소/최대 크기지정)
+    constraints: const BoxConstraints.tightFor(width: 250),
+    padding: const EdgeInsets.symmetric(horizontal: 30),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      /// 폭에 맞게 자동으로 자식 위젯의 크기를 조정해줌
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          children: [
+            const Text('명암 테마'),
+            Expanded(child: Container(),),  /// 부모 위젯의 끝까지 확장
+            Switch(
+              value: widget.useLightMode,
+              onChanged: (_) => widget.handleBrightnessToggle(),
+              // onChanged: widget.handleBrightnessToggle,
+            )
+          ],
+        ),
+        Row(
+          children: [
+            Text('Material ${widget.useMaterial3 ? 3 : 2}'),
+            Expanded(child: Container(),),
+            Switch(
+              value: widget.useMaterial3,
+              onChanged: (_) => widget.handleMaterialVersionToggle(),
+            )
+          ],
+        ),
+        const Divider(),
+        ConstrainedBox(
+          /// 높이 제한
+          constraints: const BoxConstraints(maxHeight: 200),
+          child: GridView.count(
+            crossAxisCount: 3,          /// 컬럼 그리드 갯 수
+            children: List.generate(
+              ColorSeed.values.length,
+              (index) => IconButton(
+                icon: const Icon(Icons.radio_button_unchecked),
+                color: ColorSeed.values[index].color,
+                /// 이미 선택되었나를 체크(즉 활성화된 아이콘 체크)
+                isSelected: widget.colorSelected == ColorSeed.values[index],
+                selectedIcon: const Icon(Icons.circle),
+                onPressed: () => widget.handleColorSelect(index),
+              )
+            ),
+          )
+        )
+      ],
+    ),
+  );
+
+  Widget _trailingActions() => Column(
+    mainAxisAlignment: MainAxisAlignment.end,   /// 바닦에
+    children: [
+      /// 자식 위젯의 크기를 적절히 조정해, 컬럼 내에서 적절한 공간을 확보함.
+      Flexible(child: BrightnessToggleButton(
+        handleBrightnessToggle: widget.handleBrightnessToggle,
+        showTooltipBelow: false,
+      ),),
+      Flexible(child: MaterialVersionToggleButton(
+        handleMaterialVersionToggle: widget.handleMaterialVersionToggle,
+        showTooltipBelow: false,
+      ),),
+      Flexible(child: ColorSelectButton(
+        handleColorSelect: widget.handleColorSelect,
+        colorSelected: widget.colorSelected,
+      ),),
+    ],
+  );
 }

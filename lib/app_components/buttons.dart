@@ -64,12 +64,14 @@ class ColorSelectButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final useMaterial3 = Theme.of(context).useMaterial3;
     final isBright = Theme.of(context).brightness == Brightness.light;
+    final double screenWidth = MediaQuery.of(context).size.width;
     return PopupMenuButton(
       /// 팝업 전체의 아이콘(색상은 현재 테마의 onSurfaceVariant 이용)
       icon: Icon(
         Icons.palette_outlined,
         // color: Colors.white,
-        color: !useMaterial3 && isBright
+        color: !useMaterial3 && isBright &&
+            screenWidth < SysCfg.mediumScreenWidth
           ? Colors.white
           : Theme.of(context).colorScheme.onSurfaceVariant,
       ),
