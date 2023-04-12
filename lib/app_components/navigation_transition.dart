@@ -29,9 +29,7 @@ class _NavigationTransitionState extends State<NavigationTransition> {
   late final CurvedAnimation railAnimation;
   late final ReverseAnimation barAnimation;
 
-  /// Todo: 언제 사용하나?
   bool controllerInitialized = false;
-  bool showDivider = false;
 
   @override
   void initState() {
@@ -51,7 +49,6 @@ class _NavigationTransitionState extends State<NavigationTransition> {
   Widget build(BuildContext context) {
     final ColorScheme colorScheme = Theme.of(context).colorScheme;
 
-    /// Todo: Continue......4
     return Scaffold(
       key: widget.scaffoldKey,
       appBar: widget.appBar,

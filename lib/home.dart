@@ -106,9 +106,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     }
   }
 
-  void handleScreenChange(int screenSelected) {
-    setState(() => screenIndex = screenSelected);
-  }
+  // void handleScreenChange(int screenSelected) {
+  //   setState(() => screenIndex = screenSelected);
+  // }
 
   PreferredSizeWidget createAppBar() => AppBar(
     title: Text('Material ${widget.useMaterial3 ? 3 : 2}'),
@@ -127,16 +127,34 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       : [Container()],
   );
 
-  /// Todo: ....3
-  Widget createScreenFor() {
-    return Center(
-      child: Text(
-        'Material Body',
-        style: Theme.of(context).textTheme.displayMedium?.copyWith(
-          color: Theme.of(context).colorScheme.primary,
+  Widget createScreenFor(
+    ScreenSelected screenSelected, bool showNavBarExample) {
+
+    Widget makeBody(String message) {
+      return Expanded(
+        child: Center(
+          child: Text(
+            message,
+            style: Theme.of(context).textTheme.displayMedium?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
         ),
-      ),
-    );
+      );
+    }
+
+    switch(screenSelected) {
+      case ScreenSelected.component:
+        return makeBody('Component Screen');
+      case ScreenSelected.color:
+        return makeBody('Color Screen');
+      case ScreenSelected.typography:
+        return makeBody('Typography Screen');
+      case ScreenSelected.elevation:
+        return makeBody('Elevation Screen');
+      default:
+        return makeBody('Default Screen');
+    }
   }
 
   @override
@@ -149,7 +167,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           animationController: controller,
           railAnimation: railAnimation,
           appBar: createAppBar(),
-          body: createScreenFor(),
+          body: createScreenFor(
+              ScreenSelected.values[screenIndex], controller.value == 1
+          ),
           /// 큰 화면에서 표시되는 죄측 메뉴바
           /// 작은 화면에서는 하단 바로 구현되어야 함(하단 바는 별도 구현)
           /// 화면이 중간크기보다 작어지면 닫히는 애니메이션은
@@ -162,9 +182,8 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             selectedIndex: screenIndex,
             onDestinationSelected: (index) {    /// 메뉴를 선택한 경우
               setState(() {
-                /// Todo: 이 두개가 똑같은 역할을 하는거 같은데 확인.
                 screenIndex = index;
-                handleScreenChange(screenIndex);
+                // handleScreenChange(screenIndex);
               });
             },
             /// 왼쪽 메뉴중 하단 메뉴, 적은화면에서는 앱바에 표시되는 부분임
@@ -182,14 +201,13 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
             onSelectItem: (index) {
               setState(() {
                 screenIndex = index;
-                handleScreenChange(screenIndex);
+                // handleScreenChange(screenIndex);
               });
             },
             selectedIndex: screenIndex,
             isExampleBar: false,
           ),
         );
-        /// Todo: Continue......
       }
     );
   }

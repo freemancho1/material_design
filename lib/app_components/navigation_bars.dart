@@ -30,15 +30,15 @@ class _NavigationBarsState extends State<NavigationBars> {
 
   /// 위젯 자체가 변경될 때 호출
   /// didChangeDependencies은 위젯의 상태가 변경될 때 호출
-  @override
-  void didUpdateWidget(covariant NavigationBars oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    /// Todo: 이결 별도로 해줘야 하나?
-    /// setState() 같은걸로 하면 안되나?
-    if (widget.selectedIndex != oldWidget.selectedIndex) {
-      selectedIndex = widget.selectedIndex;
-    }
-  }
+  // @override
+  // void didUpdateWidget(covariant NavigationBars oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  //   /// Todo: 이결 별도로 해줘야 하나?
+  //   /// setState() 같은걸로 하면 안되나?
+  //   if (widget.selectedIndex != oldWidget.selectedIndex) {
+  //     selectedIndex = widget.selectedIndex;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
